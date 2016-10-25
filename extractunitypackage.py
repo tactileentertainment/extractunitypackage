@@ -88,7 +88,7 @@ for asset in mapping:
 
 	destDir = os.path.join(outputDir, path)
 	destFile = os.path.join(destDir, filename)
-	source = os.path.join(workingDir, asset, 'asset');
+	source = os.path.join(workingDir, asset, 'asset');	
 
 	if not os.path.exists(destDir):
 		os.makedirs(destDir)
@@ -101,6 +101,14 @@ for asset in mapping:
 	os.chmod(destFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 	
 	print (asset + ' => ' + mapping[asset])
+
+	# Also copy meta file when it exists
+	sourceMeta = source + '.meta'
+	destFileMeta = destFile + '.meta'
+	if os.path.exists(sourceMeta):
+		shutil.move(sourceMeta, destFileMeta)
+		os.chmod(destFileMeta, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+		print (asset + '.meta' + ' => ' + mapping[asset] + '.meta')
 
 # done, cleanup any leftovers...
 shutil.rmtree(workingDir)
